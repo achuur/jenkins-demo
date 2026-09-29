@@ -1,0 +1,228 @@
+{
+  "info": {
+    "_postman_id": "a3c639f6-bbe1-4ecf-8d76-ac8d91196509",
+    "name": "restful-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40527680",
+    "_collection_link": "https://go.postman.co/collection/40527680-a3c639f6-bbe1-4ecf-8d76-ac8d91196509?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Создать объект",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Код ответа 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"В ответе есть id, и мы его запомнили\", function () {\n    const data = pm.response.json();\n    pm.expect(data.id).to.be.a(\"string\");\n    pm.expect(data.name).to.eql(\"Лекция CI/CD\");\n    pm.expect(data.data.price).to.eql(1000);\n    pm.collectionVariables.set(\"objectId\", data.id);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Лекция CI/CD\",\n  \"data\": {\n    \"year\": 2026,\n    \"price\": 1000\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.restful-api.dev/collections/devices/objects",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "collections",
+            "devices",
+            "objects"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Получить объект",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Код ответа 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Нашлась запись с лекцией\", function () {\n    const data = pm.response.json();\n    pm.expect(data.id).to.eql(pm.collectionVariables.get(\"objectId\"));\n    pm.expect(data.name).to.eql(\"Лекция CI/CD\");\n    pm.expect(data.data.price).to.eql(1000);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.restful-api.dev/collections/devices/objects/{{objectId}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "collections",
+            "devices",
+            "objects",
+            "{{objectId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Изменить цену",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Код ответа 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Цена стала 1500\", function () {\n    const data = pm.response.json();\n    pm.expect(data.name).to.eql(\"Лекция CI/CD\");\n    pm.expect(data.data.price).to.eql(1500);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Лекция CI/CD\",\n  \"data\": {\n    \"year\": 2026,\n    \"price\": 1500\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.restful-api.dev/collections/devices/objects/{{objectId}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "collections",
+            "devices",
+            "objects",
+            "{{objectId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Удалить объект",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Код ответа 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Объект удален\", function () {\n    const data = pm.response.json();\n    pm.expect(data.message).to.include(\"has been deleted\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://api.restful-api.dev/collections/devices/objects/{{objectId}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "collections",
+            "devices",
+            "objects",
+            "{{objectId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Проверка удаления",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Код ответа 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Объект не найден\", function () {\n    const data = pm.response.json();\n    pm.expect(data.error).to.include(\"not found\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.restful-api.dev/collections/devices/objects/{{objectId}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "collections",
+            "devices",
+            "objects",
+            "{{objectId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "objectId",
+      "value": ""
+    }
+  ]
+}
