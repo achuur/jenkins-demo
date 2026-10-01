@@ -177,7 +177,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"Код ответа 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Объект не найден\", function () {\n    const data = pm.response.json();\n    pm.expect(data.error).to.include(\"not found\");\n});"
+              "pm.test(\"Код ответа 400\", function () {\n    pm.response.to.have.status(400);\n});\n\npm.test(\"Объект не найден\", function () {\n    const data = pm.response.json();\n    pm.expect(data.error).to.include(\"not found\");\n});"
             ]
           }
         }
